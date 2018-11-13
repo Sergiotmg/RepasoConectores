@@ -19,10 +19,29 @@ public class Actividad1 {
             filas = sentencia.executeUpdate(
                     "CREATE TABLE Asignaturas (ID INT NOT NULL PRIMARY KEY, Nombre VARCHAR(15),Profesor int NOT NULL," +
                             "FOREIGN KEY (ID) REFERENCES Profesores(ID) )");
+            //sentencia.close();
+            //conexion.close();
+
+            //INSERTAR ALGUNAS FILAS EN TABLAS
+            //PARA PROFESORES
+            for (int i=0;i<2;i++) {
+                String sql = "INSERT INTO Profesores VALUES("+i+",'Pepe','Ruiz')";
+                System.out.println("Sentencia sql :" + sql);
+                filas = sentencia.executeUpdate(sql);
+            }
+            // PARA ASIGNATURAS
+            for (int i=0;i<2;i++) {
+                String sql = "INSERT INTO Asignaturas VALUES("+i+",'BBDD',"+1+")";
+                System.out.println("Sentencia sql :" + sql);
+                filas = sentencia.executeUpdate(sql);
+            }
+
             sentencia.close();
             conexion.close();
+
+
         } catch (ClassNotFoundException cn) {
-            cn.printStackTrace();//PONER SIEMPRE EL PRINTSTACKTRACE!! SIEMPRE PAR AMOSTRAR ALGO
+            cn.printStackTrace();//PONER SIEMPRE EL PRINTSTACKTRACE!! SIEMPRE PARA MOSTRAR ALGO
         } catch (SQLException e) {
             e.printStackTrace();
         }
