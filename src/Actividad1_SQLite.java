@@ -23,7 +23,7 @@ public class Actividad1_SQLite {
             sentencia = conexion.createStatement();
             filas = sentencia.executeUpdate(
                     "CREATE TABLE Asignaturas (ID INT  PRIMARY KEY NOT NULL, Nombre VARCHAR(15),Profesor int NOT NULL," +
-                            "FOREIGN KEY (ID) REFERENCES Profesores(ID) )");
+                            "FOREIGN KEY (Profesor) REFERENCES Profesores(ID) )");
             sentencia.close();
             conexion.close();
         } catch (ClassNotFoundException cn) {

@@ -42,6 +42,7 @@ public class Actividad2 {
             ResultSet result = sentencia.executeQuery(sql);
             if (result.next()) {
                 idProfesor = result.getInt("Profesor");
+                System.out.println("El id del profesor de la asignatura es "+idProfesor);
                 sentencia.close();
                 result.close();
                 return true;

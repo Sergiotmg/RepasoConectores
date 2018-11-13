@@ -18,7 +18,7 @@ public class Actividad1 {
             sentencia = conexion.createStatement();
             filas = sentencia.executeUpdate(
                     "CREATE TABLE Asignaturas (ID INT NOT NULL PRIMARY KEY, Nombre VARCHAR(15),Profesor int NOT NULL," +
-                            "FOREIGN KEY (ID) REFERENCES Profesores(ID) )");
+                            "FOREIGN KEY (Profesor) REFERENCES Profesores(ID) )");
             //sentencia.close();
             //conexion.close();
 
