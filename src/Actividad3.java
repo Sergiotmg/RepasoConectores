@@ -42,7 +42,7 @@ public class Actividad3 {
         }
     }
 
-    private boolean  checkProf(int idProfesor) throws SQLException {
+    public boolean checkProf(int idProfesor) throws SQLException {
         String sql="SELECT * FROM profesores WHERE id = "+idProfesor;
         ResultSet result;
         //System.out.println(sql);
