@@ -1,36 +1,54 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.util.Scanner;
 
 public class Actividad2 {
+    private static Connection conexion;
+    private String nombreA;
+    private Scanner tec=new Scanner(System.in);
+    private int idProfesor;
+    public static void main(String[] args) throws ClassNotFoundException, SQLException {
+        Actividad2 act2=new Actividad2();
+        //CREAMOS LA CONEXION
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        conexion= DriverManager.getConnection("jdbc:mysql://localhost/examen?useUnicode=" +
+                        "true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC",
+                "sergio", "");
+        act2.buscaAsig();
+    }
 
+    private  void buscaAsig() throws SQLException {
+        System.out.println("Introduce nombre asignatura :");
+        nombreA=tec.nextLine();
 
-    public static void main(String[] args) {
+        if (checkAsig(nombreA)){
+            String sql="select * from profesores where profesores.id="+idProfesor;
+            Statement sentencia=conexion.createStatement();
+            ResultSet result=sentencia.executeQuery(sql);
+            while (result.next()) {
+                System.out.println("ID profesor: " + result.getInt("id") +"\n"+"* Nombre profesor: "+
+                        result.getString("Nombre") + "\n" + "* Apellido profesor: " +
+                        result.getString("Apellido") + "\n");
+            }
 
-        try {
-            //Cargamos el driver
-            Class.forName("org.sqlite.JDBC");
-            //PARA CLASE
-            //Connection conexion = DriverManager.getConnection("jdbc:sqlite:C:\\SQLite\\db\\repasoConectores.db");
-            //PARA CASA ( no se ha podido crear la bbdd con sqlite)
-            Connection conexion = DriverManager.getConnection("jdbc:sqlite:E:\\OneDrive2\\OneDrive\\AA_Acceso Datos\\CONECTORS\\sqlite\\examen.db");
-            //Preparamoslaconsulta
-            Statement sentencia = conexion.createStatement();
-            int filas = sentencia.executeUpdate(
-                    "CREATE TABLE Profesores (ID INT NOT NULL PRIMARY KEY, Nombre VARCHAR(15),Apellido VARCHAR(15))");
-
-            sentencia = conexion.createStatement();
-            filas = sentencia.executeUpdate(
-                    "CREATE TABLE Asignaturas (ID INT NOT NULL PRIMARY KEY, Nombre VARCHAR(15),Profesor int NOT NULL," +
-                            "FOREIGN KEY (ID) REFERENCES Profesores(ID) )");
-            sentencia.close();
-            conexion.close();
-        } catch (ClassNotFoundException cn) {
-            cn.printStackTrace();//PONER SIEMPRE EL PRINTSTACKTRACE!! SIEMPRE PARA MOSTRAR ALGO
-        } catch (SQLException e) {
-            e.printStackTrace();
+        }else{
+            System.out.println("No existe  \n");
+            buscaAsig();
         }
+    }
+
+    private boolean  checkAsig(String nombreA) throws SQLException {
+        String sql="SELECT * FROM asignaturas WHERE Nombre = '"+nombreA+"'";
+        Statement sentencia = conexion.createStatement();
+            ResultSet result = sentencia.executeQuery(sql);
+            if (result.next()) {
+                idProfesor = result.getInt("Profesor");
+                sentencia.close();
+                result.close();
+                return true;
+            } else {
+                return false;
+            }
+
     }
 
 }
